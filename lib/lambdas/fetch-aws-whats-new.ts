@@ -38,7 +38,7 @@ function ensureUniquePubDates(feedXml: string): string {
       let dateStr = date.toUTCString();
 
       while (seenDates.has(dateStr)) {
-        date = new Date(date.getTime() - 1000); // Subtract 1 second
+        date = new Date(date.getTime() - 60000); // Subtract 1 minute
         dateStr = date.toUTCString();
       }
 
