@@ -11,10 +11,18 @@ export class AwsWhatsNew extends Construct {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id);
 
+    const awsWhatsNewLoggingBucket = new s3.Bucket(this, `AwsWhatsNewLoggingBucket`, {
+      bucketName: `aws-whats-new-access-logging`,
+      objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
+      websiteIndexDocument: 'index.html',
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    })
+
     const awsWhatsNewBucket = new s3.Bucket(this, `AwsWhatsNewBucket`, {
       bucketName: `aws-whats-new.yob.id.au`,
       objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
       websiteIndexDocument: 'index.html',
+      serverAccessLogsBucket: awsWhatsNewLoggingBucket,
       blockPublicAccess: new s3.BlockPublicAccess({
         blockPublicAcls: false,
         ignorePublicAcls: false,
